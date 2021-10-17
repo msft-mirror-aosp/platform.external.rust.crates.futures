@@ -41,6 +41,8 @@ rust_library {
     name: "libfutures",
     host_supported: true,
     crate_name: "futures",
+    cargo_env_compat: true,
+    cargo_pkg_version: "0.3.17",
     srcs: ["src/lib.rs"],
     edition: "2018",
     features: [
@@ -67,24 +69,3 @@ rust_library {
     ],
     min_sdk_version: "29",
 }
-
-// dependent_library ["feature_list"]
-//   autocfg-1.0.1
-//   futures-channel-0.3.16 "alloc,futures-sink,sink,std"
-//   futures-core-0.3.16 "alloc,std"
-//   futures-executor-0.3.16 "std"
-//   futures-io-0.3.16 "std"
-//   futures-macro-0.3.16
-//   futures-sink-0.3.16 "alloc,std"
-//   futures-task-0.3.16 "alloc,std"
-//   futures-util-0.3.16 "alloc,async-await,async-await-macro,channel,futures-channel,futures-io,futures-macro,futures-sink,io,memchr,proc-macro-hack,proc-macro-nested,sink,slab,std"
-//   memchr-2.4.0 "default,std"
-//   pin-project-lite-0.2.7
-//   pin-utils-0.1.0
-//   proc-macro-hack-0.5.19
-//   proc-macro-nested-0.1.7
-//   proc-macro2-1.0.28 "default,proc-macro"
-//   quote-1.0.9 "default,proc-macro"
-//   slab-0.4.4 "default,std"
-//   syn-1.0.74 "clone-impls,default,derive,full,parsing,printing,proc-macro,quote,visit-mut"
-//   unicode-xid-0.2.2 "default"
