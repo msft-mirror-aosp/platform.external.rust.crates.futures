@@ -1,26 +1,27 @@
-use futures::io::AsyncRead;
-use futures_test::task::panic_context;
-use std::io;
-use std::pin::Pin;
-use std::task::{Context, Poll};
+mod mock_reader {
+    use futures::io::AsyncRead;
+    use std::io;
+    use std::pin::Pin;
+    use std::task::{Context, Poll};
 
-struct MockReader {
-    fun: Box<dyn FnMut(&mut [u8]) -> Poll<io::Result<usize>>>,
-}
-
-impl MockReader {
-    fn new(fun: impl FnMut(&mut [u8]) -> Poll<io::Result<usize>> + 'static) -> Self {
-        Self { fun: Box::new(fun) }
+    pub struct MockReader {
+        fun: Box<dyn FnMut(&mut [u8]) -> Poll<io::Result<usize>>>,
     }
-}
 
-impl AsyncRead for MockReader {
-    fn poll_read(
-        self: Pin<&mut Self>,
-        _cx: &mut Context<'_>,
-        buf: &mut [u8],
-    ) -> Poll<io::Result<usize>> {
-        (self.get_mut().fun)(buf)
+    impl MockReader {
+        pub fn new(fun: impl FnMut(&mut [u8]) -> Poll<io::Result<usize>> + 'static) -> Self {
+            Self { fun: Box::new(fun) }
+        }
+    }
+
+    impl AsyncRead for MockReader {
+        fn poll_read(
+            self: Pin<&mut Self>,
+            _cx: &mut Context<'_>,
+            buf: &mut [u8]
+        ) -> Poll<io::Result<usize>> {
+            (self.get_mut().fun)(buf)
+        }
     }
 }
 
@@ -28,6 +29,14 @@ impl AsyncRead for MockReader {
 /// calls `poll_read` with an empty slice if no buffers are provided.
 #[test]
 fn read_vectored_no_buffers() {
+    use futures::io::AsyncRead;
+    use futures_test::task::panic_context;
+    use std::io;
+    use std::pin::Pin;
+    use std::task::Poll;
+
+    use mock_reader::MockReader;
+
     let mut reader = MockReader::new(|buf| {
         assert_eq!(buf, b"");
         Err(io::ErrorKind::BrokenPipe.into()).into()
@@ -44,6 +53,14 @@ fn read_vectored_no_buffers() {
 /// calls `poll_read` with the first non-empty buffer.
 #[test]
 fn read_vectored_first_non_empty() {
+    use futures::io::AsyncRead;
+    use futures_test::task::panic_context;
+    use std::io;
+    use std::pin::Pin;
+    use std::task::Poll;
+
+    use mock_reader::MockReader;
+
     let mut reader = MockReader::new(|buf| {
         assert_eq!(buf.len(), 4);
         buf.copy_from_slice(b"four");
