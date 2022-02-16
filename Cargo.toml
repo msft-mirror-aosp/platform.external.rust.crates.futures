@@ -3,16 +3,17 @@
 # When uploading crates to the registry Cargo will automatically
 # "normalize" Cargo.toml files for maximal compatibility
 # with all versions of Cargo and also rewrite `path` dependencies
-# to registry (e.g., crates.io) dependencies.
+# to registry (e.g., crates.io) dependencies
 #
-# If you are reading this file be aware that the original Cargo.toml
-# will likely look very different (and much more reasonable).
-# See Cargo.toml.orig for the original contents.
+# If you believe there's an error in this file please file an
+# issue against the rust-lang/cargo repository. If you're
+# editing this file be aware that the upstream Cargo.toml
+# will likely look very different (and much more reasonable)
 
 [package]
 edition = "2018"
 name = "futures"
-version = "0.3.17"
+version = "0.3.13"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
 description = "An implementation of futures and streams featuring zero allocations,\ncomposability, and iterator-like interfaces.\n"
 homepage = "https://rust-lang.github.io/futures-rs"
@@ -29,33 +30,33 @@ rustdoc-args = ["--cfg", "docsrs"]
 [package.metadata.playground]
 features = ["std", "async-await", "compat", "io-compat", "executor", "thread-pool"]
 [dependencies.futures-channel]
-version = "0.3.17"
+version = "0.3.13"
 features = ["sink"]
 default-features = false
 
 [dependencies.futures-core]
-version = "0.3.17"
+version = "0.3.13"
 default-features = false
 
 [dependencies.futures-executor]
-version = "0.3.17"
+version = "0.3.13"
 optional = true
 default-features = false
 
 [dependencies.futures-io]
-version = "0.3.17"
+version = "0.3.13"
 default-features = false
 
 [dependencies.futures-sink]
-version = "0.3.17"
+version = "0.3.13"
 default-features = false
 
 [dependencies.futures-task]
-version = "0.3.17"
+version = "0.3.13"
 default-features = false
 
 [dependencies.futures-util]
-version = "0.3.17"
+version = "0.3.13"
 features = ["sink"]
 default-features = false
 [dev-dependencies.assert_matches]
@@ -77,7 +78,7 @@ version = "0.1.11"
 alloc = ["futures-core/alloc", "futures-task/alloc", "futures-sink/alloc", "futures-channel/alloc", "futures-util/alloc"]
 async-await = ["futures-util/async-await", "futures-util/async-await-macro"]
 bilock = ["futures-util/bilock"]
-cfg-target-has-atomic = []
+cfg-target-has-atomic = ["futures-core/cfg-target-has-atomic", "futures-task/cfg-target-has-atomic", "futures-channel/cfg-target-has-atomic", "futures-util/cfg-target-has-atomic"]
 compat = ["std", "futures-util/compat"]
 default = ["std", "async-await", "executor"]
 executor = ["std", "futures-executor/std"]
