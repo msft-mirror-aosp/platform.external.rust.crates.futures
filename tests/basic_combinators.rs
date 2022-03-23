@@ -13,21 +13,17 @@ fn basic_future_combinators() {
             tx1.send(x).unwrap(); // Send 1
             tx1.send(2).unwrap(); // Send 2
             future::ready(3)
-        })
-        .map(move |x| {
+        }).map(move |x| {
             tx2.send(x).unwrap(); // Send 3
             tx2.send(4).unwrap(); // Send 4
             5
-        })
-        .map(move |x| {
+        }).map(move |x| {
             tx3.send(x).unwrap(); // Send 5
         });
 
     assert!(rx.try_recv().is_err()); // Not started yet
     fut.run_in_background(); // Start it
-    for i in 1..=5 {
-        assert_eq!(rx.recv(), Ok(i));
-    } // Check it
+    for i in 1..=5 { assert_eq!(rx.recv(), Ok(i)); } // Check it
     assert!(rx.recv().is_err()); // Should be done
 }
 
@@ -97,8 +93,6 @@ fn basic_try_future_combinators() {
 
     assert!(rx.try_recv().is_err()); // Not started yet
     fut.run_in_background(); // Start it
-    for i in 1..=12 {
-        assert_eq!(rx.recv(), Ok(i));
-    } // Check it
+    for i in 1..=12 { assert_eq!(rx.recv(), Ok(i)); } // Check it
     assert!(rx.recv().is_err()); // Should be done
 }
